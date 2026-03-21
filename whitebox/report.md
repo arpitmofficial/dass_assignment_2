@@ -123,6 +123,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 7. `test_player_net_worth_includes_properties` (in `test_player_net_worth.py`)
 - **Reason for Test:** Checks the state calculation for a player's total net worth, which is crucial for determining the winner at the end of the game or bankruptcy proceedings.
 - **Errors/Logical Issues Found:** In `player.py`, the `net_worth()` property simply returns `self.balance` (cash on hand), entirely ignoring the value of any properties the player owns.
+- **Fix Applied:** Modified `net_worth()` in `player.py` to aggregate the cash balance with the total `price` of all owned properties.
 
 #### 8. `test_unmortgage_state_leak` (in `test_property_unmortgage_leak.py`)
 - **Reason for Test:** State validation MUST happen before state mutation. We test that failing to afford an unmortgage leaves the property mortgaged.
