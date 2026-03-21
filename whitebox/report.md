@@ -150,6 +150,11 @@ Since these test scripts are designed to catch logical errors present in the cur
 - **Errors/Logical Issues Found:** The `CardDeck.draw()` method simply iterates endlessly using an index and modulo arithmetic. It never physically removes the card from the deck array. Thus, a player can hold the card, but it will still be drawn again if the deck cycles.
 - **Fix Applied:** Modified `CardDeck.draw()` in `cards.py` to `pop()` a `jail_free` card from the list instead of advancing the index, ensuring it cannot be drawn again. Also added a `return_card()` method, called from `game.py`, to restore the card to the deck when the player uses it to leave jail.
 
+#### 13. `test_voluntary_jail_fine_deducted_from_player` (in `test_game_jail_fine.py`)
+- **Reason for Test:** When a jailed player voluntarily pays the $50 fine to leave early, both sides of the transaction must be verified — the bank gains the money AND the player loses it. Missing either half silently corrupts the game economy.
+- **Errors/Logical Issues Found:** In `game.py`, the voluntary jail-exit branch (`_handle_jail_turn()`) called `self.bank.collect(JAIL_FINE)` to credit the bank, but **never called `player.deduct_money(JAIL_FINE)`**. The player walks free without paying, gaining an illegal $50 advantage every time they choose to leave jail. This bug was discovered during a full deep-analysis pass of all 9 source files, as no test previously exercised this specific branch.
+- **Fix Applied:** Added `player.deduct_money(JAIL_FINE)` immediately before `self.bank.collect(JAIL_FINE)` in the voluntary-exit branch of `_handle_jail_turn()` in `game.py`.
+
 ### 1.3.1 Exhaustive Module Coverage
 In addition to the targeted bug scripts above, full 100% boundary testing suites were written to strictly satisfy the assignment's branch coverage constraints. These exhaustive test scripts simulate all conditions, exception raising, negative balances, array wrapping, and normal interactions.
 - `test_dice.py` (Resets, describes, double streaks validation)
