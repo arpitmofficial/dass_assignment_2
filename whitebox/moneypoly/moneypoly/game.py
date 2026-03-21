@@ -189,6 +189,7 @@ class Game:
             print(f"  {prop.name} is not mortgaged.")
             return False
         if player.balance < cost:
+            prop.is_mortgaged = True
             print(f"  {player.name} cannot afford to unmortgage {prop.name} (${cost}).")
             return False
         player.deduct_money(cost)

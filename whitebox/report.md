@@ -128,6 +128,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 8. `test_unmortgage_state_leak` (in `test_property_unmortgage_leak.py`)
 - **Reason for Test:** State validation MUST happen before state mutation. We test that failing to afford an unmortgage leaves the property mortgaged.
 - **Errors/Logical Issues Found:** In `game.py`, calling `prop.unmortgage()` immediately sets `is_mortgaged = False`. The game *then* checks `if player.balance < cost`, and if true, it cancels the transaction but **forgets to roll back** the `is_mortgaged` status. The player gets a free unmortgage!
+- **Fix Applied:** Modified `unmortgage_property()` to roll back the property state (`prop.is_mortgaged = True`) if the balance check fails.
 
 #### 9. `test_trade_adds_money_to_seller` (in `test_game_trade.py`)
 - **Reason for Test:** Tests the transfer of assets between two players during a trade.
