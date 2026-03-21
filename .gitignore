@@ -19,3 +19,6 @@ Thumbs.db
 
 # Project-Specific
 *.pdf
+
+blackbox/
+blackbox/report.md
