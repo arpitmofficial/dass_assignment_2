@@ -143,6 +143,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 11. `test_find_winner_uses_max_net_worth` (in `test_game_winner.py`)
 - **Reason for Test:** Checks the final game state evaluation to determine the winner based on net worth.
 - **Errors/Logical Issues Found:** `game.find_winner()` uses the `min()` function instead of `max()`, erroneously crowning the player with the *lowest* net worth as the winner of Monopoly.
+- **Fix Applied:** Changed `min()` to `max()` inside `find_winner()` to ensure the wealthiest player is correctly declared the winner.
 
 #### 12. `test_jail_free_card_removed_from_deck` (in `test_cards_jail_card.py`)
 - **Reason for Test:** Tests the state path for limited-quantity cards. "Get out of Jail Free" cards should be held by the player and temporarily removed from the deck.
