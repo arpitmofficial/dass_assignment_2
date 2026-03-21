@@ -148,6 +148,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 12. `test_jail_free_card_removed_from_deck` (in `test_cards_jail_card.py`)
 - **Reason for Test:** Tests the state path for limited-quantity cards. "Get out of Jail Free" cards should be held by the player and temporarily removed from the deck.
 - **Errors/Logical Issues Found:** The `CardDeck.draw()` method simply iterates endlessly using an index and modulo arithmetic. It never physically removes the card from the deck array. Thus, a player can hold the card, but it will still be drawn again if the deck cycles.
+- **Fix Applied:** Modified `CardDeck.draw()` in `cards.py` to `pop()` a `jail_free` card from the list instead of advancing the index, ensuring it cannot be drawn again. Also added a `return_card()` method, called from `game.py`, to restore the card to the deck when the player uses it to leave jail.
 
 ### 1.3.1 Exhaustive Module Coverage
 In addition to the targeted bug scripts above, full 100% boundary testing suites were written to strictly satisfy the assignment's branch coverage constraints. These exhaustive test scripts simulate all conditions, exception raising, negative balances, array wrapping, and normal interactions.

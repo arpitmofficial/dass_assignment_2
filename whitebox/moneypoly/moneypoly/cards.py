@@ -141,12 +141,23 @@ class CardDeck:
         """
         Draw the next card from the deck, cycling back to the start
         when the deck is exhausted. Returns the card dict.
+        For 'jail_free' cards, the card is physically removed from the deck
+        so it cannot be drawn again while a player holds it.
         """
         if not self.cards:
             return None
-        card = self.cards[self.index % len(self.cards)]
-        self.index += 1
+        pos = self.index % len(self.cards)
+        card = self.cards[pos]
+        if card.get("action") == "jail_free":
+            self.cards.pop(pos)  # FIX 12: Remove from deck — player now holds it
+        else:
+            self.index += 1
         return card
+
+    def return_card(self, card):
+        """Return a previously-removed card (e.g. jail_free) back into the deck."""
+        insert_pos = self.index % max(len(self.cards), 1)
+        self.cards.insert(insert_pos, card)
 
     def peek(self):
         """Return the next card without advancing the index."""
