@@ -133,6 +133,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 9. `test_trade_adds_money_to_seller` (in `test_game_trade.py`)
 - **Reason for Test:** Tests the transfer of assets between two players during a trade.
 - **Errors/Logical Issues Found:** Inside `game.trade()`, the application successfully deducts `cash_amount` from the buyer's balance, but **never adds it** to the seller's balance. The seller loses their property and gets literally nothing in return.
+- **Fix Applied:** Embedded `seller.add_money(cash_amount)` inside `trade()` in `game.py` to correctly enrich the seller's balance.
 
 #### 10. Missing `interactive_menu` Invocation (No Test Script)
 - **Reason for check:** A dry run of the game sequence reveals that players never get a chance to take actions (like trading, mortgaging, etc.) before they roll the dice.
