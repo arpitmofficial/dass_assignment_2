@@ -68,7 +68,7 @@ class Game:
         self._move_and_resolve(player, roll)
 
         # Rolling doubles earns an extra turn
-        if self.dice.is_doubles() and player in self.players:
+        if self.dice.is_doubles() and player in self.players and not player.in_jail:
             print(f"  Doubles! {player.name} rolls again.")
             return
 

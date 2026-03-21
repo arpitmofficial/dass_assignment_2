@@ -113,6 +113,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 5. `test_extra_turn_while_in_jail` (in `test_game_jail_doubles.py`)
 - **Reason for Test:** Tests an edge case decision path: rolling doubles but landing on "Go to Jail".
 - **Errors/Logical Issues Found:** Going to jail should end your turn immediately. However, `play_turn()` checks `if self.dice.is_doubles(): return` at the end and mistakenly grants an extra turn because it doesn't verify if the player was just jailed.
+- **Fix Applied:** Embedded `and not player.in_jail` into the extra turn evaluation in `game.py`.
 
 #### 6. `test_missing_turn_advance_after_leaving_jail` (in `test_game_jail_leave.py`)
 - **Reason for Test:** Tests the decision branch inside the Jail logic where a player pays the fine or uses a card to leave.
