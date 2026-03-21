@@ -1,5 +1,7 @@
 # White Box Testing Report - Code Quality Analysis
 
+# 1.2
+
 ## Iteration 1: `moneypoly/main.py`
 - **Fixes Applied**:
   - Added module-level docstring.
