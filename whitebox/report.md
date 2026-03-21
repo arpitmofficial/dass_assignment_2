@@ -98,6 +98,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 2. `test_bank_loan_deduction` (in `test_bank_loan.py`)
 - **Reason for Test:** Verifies a key variable state (Bank funds). When the bank issues a loan, its own balance must logically decrease.
 - **Errors/Logical Issues Found:** The `Bank.give_loan()` method credits the player's balance but fails to deduct the loan amount from `self._funds`.
+- **Fix Applied:** Added `self._funds -= amount` inside `Bank.give_loan()` to correctly reduce the bank's internal reserves.
 
 #### 3. `test_property_monopoly_rent` (in `test_property_rent_bug.py`)
 - **Reason for Test:** Tests the decision branch for Monopoly rent multipliers. Rent is only doubled if the player owns *all* properties in the group.
