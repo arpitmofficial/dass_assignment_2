@@ -115,35 +115,32 @@ Since these test scripts are designed to catch logical errors present in the cur
 - **Errors/Logical Issues Found:** Going to jail should end your turn immediately. However, `play_turn()` checks `if self.dice.is_doubles(): return` at the end and mistakenly grants an extra turn because it doesn't verify if the player was just jailed.
 - **Fix Applied:** Embedded `and not player.in_jail` into the extra turn evaluation in `game.py`.
 
-#### 6. `test_missing_turn_advance_after_leaving_jail` (in `test_game_jail_leave.py`)
-- **Reason for Test:** Tests the decision branch inside the Jail logic where a player pays the fine or uses a card to leave.
-- **Errors/Logical Issues Found:** Inside `_handle_jail_turn()`, after a player successfully leaves jail and rolls the dice, the function unconditionally `returns`. Because `self.advance_turn()` is never called, the game freezes on that player, giving them infinite consecutive turns.
-
-#### 7. `test_pay_rent_transfers_money_to_owner` (in `test_game_rent.py`)
+#### 6. `test_pay_rent_transfers_money_to_owner` (in `test_game_rent.py`)
 - **Reason for Test:** Verifies the fundamental rule of transferring wealth. When rent is paid, it must leave the payer's account AND enter the owner's account.
 - **Errors/Logical Issues Found:** In `game.py`, the `pay_rent()` function successfully deducts rent from the payer's balance but completely forgets to add those funds to the property owner's balance, essentially deleting the money from the game.
+- **Fix Applied:** Added `prop.owner.add_money(rent)` inside `pay_rent()` in `game.py` to correctly transfer the funds to the owner.
 
-#### 8. `test_player_net_worth_includes_properties` (in `test_player_net_worth.py`)
+#### 7. `test_player_net_worth_includes_properties` (in `test_player_net_worth.py`)
 - **Reason for Test:** Checks the state calculation for a player's total net worth, which is crucial for determining the winner at the end of the game or bankruptcy proceedings.
 - **Errors/Logical Issues Found:** In `player.py`, the `net_worth()` property simply returns `self.balance` (cash on hand), entirely ignoring the value of any properties the player owns.
 
-#### 9. `test_unmortgage_state_leak` (in `test_property_unmortgage_leak.py`)
+#### 8. `test_unmortgage_state_leak` (in `test_property_unmortgage_leak.py`)
 - **Reason for Test:** State validation MUST happen before state mutation. We test that failing to afford an unmortgage leaves the property mortgaged.
 - **Errors/Logical Issues Found:** In `game.py`, calling `prop.unmortgage()` immediately sets `is_mortgaged = False`. The game *then* checks `if player.balance < cost`, and if true, it cancels the transaction but **forgets to roll back** the `is_mortgaged` status. The player gets a free unmortgage!
 
-#### 10. `test_trade_adds_money_to_seller` (in `test_game_trade.py`)
+#### 9. `test_trade_adds_money_to_seller` (in `test_game_trade.py`)
 - **Reason for Test:** Tests the transfer of assets between two players during a trade.
 - **Errors/Logical Issues Found:** Inside `game.trade()`, the application successfully deducts `cash_amount` from the buyer's balance, but **never adds it** to the seller's balance. The seller loses their property and gets literally nothing in return.
 
-#### 11. Missing `interactive_menu` Invocation (No Test Script)
+#### 10. Missing `interactive_menu` Invocation (No Test Script)
 - **Reason for check:** A dry run of the game sequence reveals that players never get a chance to take actions (like trading, mortgaging, etc.) before they roll the dice.
 - **Errors/Logical Issues Found:** The method `interactive_menu(self, player)` exists in `game.py` and is fully implemented, but it is **never actually called** anywhere in the game loop (`play_turn` or `run`). This means it's effectively dead code, and players are forced to helplessly roll the dice until they randomly go bankrupt.
 
-#### 12. `test_find_winner_uses_max_net_worth` (in `test_game_winner.py`)
+#### 11. `test_find_winner_uses_max_net_worth` (in `test_game_winner.py`)
 - **Reason for Test:** Checks the final game state evaluation to determine the winner based on net worth.
 - **Errors/Logical Issues Found:** `game.find_winner()` uses the `min()` function instead of `max()`, erroneously crowning the player with the *lowest* net worth as the winner of Monopoly.
 
-#### 13. `test_jail_free_card_removed_from_deck` (in `test_cards_jail_card.py`)
+#### 12. `test_jail_free_card_removed_from_deck` (in `test_cards_jail_card.py`)
 - **Reason for Test:** Tests the state path for limited-quantity cards. "Get out of Jail Free" cards should be held by the player and temporarily removed from the deck.
 - **Errors/Logical Issues Found:** The `CardDeck.draw()` method simply iterates endlessly using an index and modulo arithmetic. It never physically removes the card from the deck array. Thus, a player can hold the card, but it will still be drawn again if the deck cycles.
 

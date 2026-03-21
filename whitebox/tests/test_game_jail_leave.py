@@ -20,7 +20,9 @@ def test_missing_turn_advance_after_leaving_jail():
         # Prevent doubles to avoid the extra turn issue
         with patch("moneypoly.dice.Dice.is_doubles", return_value=False):
             with patch("moneypoly.dice.Dice.describe", return_value="1+2=3"):
-                game.play_turn()
+                # Mock input so that the turn resolves cleanly without waiting for Stdin
+                with patch("builtins.input", return_value="s"):
+                    game.play_turn()
             
     # Alice should have moved out of jail
     assert alice.in_jail is False, "Alice failed to leave jail."
