@@ -1,3 +1,6 @@
+"""
+Module defining the game Board and its tiles.
+"""
 from moneypoly.property import Property, PropertyGroup
 from moneypoly.config import (
     JAIL_POSITION,
@@ -105,7 +108,7 @@ class Board:
         prop = self.get_property_at(position)
         if prop is None:
             return False
-        if prop.is_mortgaged == True:
+        if prop.is_mortgaged is True:
             return False
         return prop.owner is None
 
