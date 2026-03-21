@@ -138,6 +138,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 10. Missing `interactive_menu` Invocation (No Test Script)
 - **Reason for check:** A dry run of the game sequence reveals that players never get a chance to take actions (like trading, mortgaging, etc.) before they roll the dice.
 - **Errors/Logical Issues Found:** The method `interactive_menu(self, player)` exists in `game.py` and is fully implemented, but it is **never actually called** anywhere in the game loop (`play_turn` or `run`). This means it's effectively dead code, and players are forced to helplessly roll the dice until they randomly go bankrupt.
+- **Fix Applied:** Integrated `self.interactive_menu(player)` at the very beginning of the `play_turn()` sequence, right after the banner is printed, allowing players to utilize all intended strategic actions.
 
 #### 11. `test_find_winner_uses_max_net_worth` (in `test_game_winner.py`)
 - **Reason for Test:** Checks the final game state evaluation to determine the winner based on net worth.

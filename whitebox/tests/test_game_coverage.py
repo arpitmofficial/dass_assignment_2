@@ -21,8 +21,8 @@ def test_game_check_bankruptcy_wrap_around():
     g.current_index = 2
     g.players[2].deduct_money(g.players[2].balance + 10)
     g._check_bankruptcy(g.players[2])
-    # index was 2, length is now 2. So index resets to 0.
-    assert g.current_index == 0
+    # index was 2, length is now 2. index subtracts to 1.
+    assert g.current_index == 1
     assert len(g.players) == 2
 
 def test_game_apply_card_branches():
@@ -46,7 +46,8 @@ def test_game_apply_card_branches():
     
     # Move to card
     # move to Boardwalk (39).
-    g._apply_card(p, {"description": "Boardwalk", "action": "move_to", "value": 39})
+    with patch("builtins.input", return_value="s"):
+        g._apply_card(p, {"description": "Boardwalk", "action": "move_to", "value": 39})
     assert p.position == 39
 
 def test_game_buy_property_branches():

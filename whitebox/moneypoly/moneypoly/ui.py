@@ -70,10 +70,13 @@ def safe_int_input(prompt, default=0):
     """
     try:
         return int(input(prompt))
-    except ValueError:
+    except (ValueError, EOFError, OSError):
         return default
 
 
 def confirm(prompt):
     """Prompt the user for a yes/no answer. Returns True for 'y'."""
-    return input(prompt).strip().lower() == "y"
+    try:
+        return input(prompt).strip().lower() == "y"
+    except (EOFError, OSError):
+        return False
