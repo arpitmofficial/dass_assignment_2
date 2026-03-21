@@ -108,6 +108,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 4. `test_skipped_player_after_bankruptcy` (in `test_game_bankruptcy.py`)
 - **Reason for Test:** Tests the branch handling player bankruptcy. The game must seamlessly transition to the next player even when the current player is eliminated from the list.
 - **Errors/Logical Issues Found:** In `game.py`, when a player gets eliminated, they are removed from the `players` list, shifting the list indices. However, the game unconditionally calls `advance_turn()` at the end of the turn, which skips the player who shifted into the current index.
+- **Fix Applied:** Modified `_check_bankruptcy()` to decrement the `current_index` whenever an eliminated player's index was at or logically before the pointer, neutralizing the index shift. Extinguished 'extra turns' for players if they went bankrupt while rolling doubles.
 
 #### 5. `test_extra_turn_while_in_jail` (in `test_game_jail_doubles.py`)
 - **Reason for Test:** Tests an edge case decision path: rolling doubles but landing on "Go to Jail".

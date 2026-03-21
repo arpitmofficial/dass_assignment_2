@@ -38,6 +38,8 @@ class Game:
 
     def advance_turn(self):
         """Move to the next player in the rotation."""
+        if not self.players:
+            return
         self.current_index = (self.current_index + 1) % len(self.players)
         self.turn_number += 1
 
@@ -66,7 +68,7 @@ class Game:
         self._move_and_resolve(player, roll)
 
         # Rolling doubles earns an extra turn
-        if self.dice.is_doubles():
+        if self.dice.is_doubles() and player in self.players:
             print(f"  Doubles! {player.name} rolls again.")
             return
 
@@ -350,7 +352,10 @@ class Game:
                 prop.is_mortgaged = False
             player.properties.clear()
             if player in self.players:
+                idx = self.players.index(player)
                 self.players.remove(player)
+                if idx <= self.current_index:
+                    self.current_index -= 1
             if self.current_index >= len(self.players):
                 self.current_index = 0
 
