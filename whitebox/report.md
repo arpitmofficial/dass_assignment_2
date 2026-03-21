@@ -103,6 +103,7 @@ Since these test scripts are designed to catch logical errors present in the cur
 #### 3. `test_property_monopoly_rent` (in `test_property_rent_bug.py`)
 - **Reason for Test:** Tests the decision branch for Monopoly rent multipliers. Rent is only doubled if the player owns *all* properties in the group.
 - **Errors/Logical Issues Found:** `PropertyGroup.all_owned_by()` uses Python's `any()` function rather than `all()`. Owning a single property out of a group of two or three mistakenly triggers the 2x rent multiplier.
+- **Fix Applied:** Changed `any()` to `all()` in `PropertyGroup.all_owned_by()` to correctly ensure the rent multiplier only activates if the player owns 100% of the properties in the colored group.
 
 #### 4. `test_skipped_player_after_bankruptcy` (in `test_game_bankruptcy.py`)
 - **Reason for Test:** Tests the branch handling player bankruptcy. The game must seamlessly transition to the next player even when the current player is eliminated from the list.
