@@ -270,7 +270,11 @@ class Game:
                 player.in_jail = False
                 player.jail_turns = 0
                 # FIX 12: Return the card to the appropriate deck so it can be reused
-                jail_free_card = {"description": "Get Out of Jail Free. Keep until needed.", "action": "jail_free", "value": 0}
+                jail_free_card = {
+                    "description": "Get Out of Jail Free. Keep until needed.",
+                    "action": "jail_free",
+                    "value": 0,
+                }
                 self.decks["chance"].return_card(jail_free_card)
                 print(f"  {player.name} used a Get Out of Jail Free card!")
                 roll = self.dice.roll()
