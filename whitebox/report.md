@@ -68,5 +68,10 @@
   - Fixed `too-many-instance-attributes` by removing redundant attributes and combining some.
   - Fixed `too-many-branches` by combining identical branches and moving a specific branch loop to a new helper function.
 
+## Iteration 13: `moneypoly/property.py` and `moneypoly/board.py`
+- **Fixes Applied**:
+  - Fixed `too-many-arguments` and `too-many-positional-arguments` by removing the `group` argument from the `Property` constructor. Properties are now added to their group after instantiation in `board.py`.
+  - Fixed `too-many-instance-attributes` by removing the unused `self.houses` variable and converting `self.mortgage_value` into a dynamically calculated `@property`.
+
 
 
