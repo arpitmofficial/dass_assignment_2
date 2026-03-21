@@ -1,4 +1,6 @@
-import sys
+"""
+Module defining the Player class and their actions.
+"""
 from moneypoly.config import STARTING_BALANCE, BOARD_SIZE, GO_SALARY, JAIL_POSITION
 
 
@@ -45,9 +47,9 @@ class Player:
         old_position = self.position
         self.position = (self.position + steps) % BOARD_SIZE
 
-        if self.position == 0:
+        if self.position < old_position:
             self.add_money(GO_SALARY)
-            print(f"  {self.name} landed on Go and collected ${GO_SALARY}.")
+            print(f"  {self.name} passed or landed on Go and collected ${GO_SALARY}.")
 
         return self.position
 
