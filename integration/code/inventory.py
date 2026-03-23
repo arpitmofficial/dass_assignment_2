@@ -38,4 +38,8 @@ class Inventory:
 
     def use_parts(self, amount: int):
         # Subtract the required amount of parts from the garage
+        if amount < 0:
+            raise ValueError("Parts amount must be positive.")
+        if amount > self.spare_parts:
+            raise ValueError("Not enough spare parts in inventory.")
         self.spare_parts -= amount

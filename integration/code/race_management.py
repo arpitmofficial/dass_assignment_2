@@ -14,6 +14,12 @@ class RaceManagement:
         if member.role != "driver":
             raise ValueError(f"Race entry failed! {driver_name} is a {member.role}, not a 'driver'.")
 
+        # Business Rule: The car must exist and be ready to race.
+        if not self.inventory.is_car_ready(car_name):
+            raise ValueError(
+                f"Race entry failed! Car '{car_name}' is not ready or not in inventory."
+            )
+
         print(f"Race started! Driver: {driver_name} | Car: {car_name}")
         # Return a race payload dictionary that can be passed to Results
         return {"driver": driver_name, "car": car_name}

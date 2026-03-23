@@ -288,10 +288,21 @@ All test cases are located in: `integration/tests/test_integration.py`
 From the repo root, activate your virtual environment (if you use one), then run:
 
 ```bash
-pytest integration/tests/test_integration.py -v
+/home/arpit-mahtele/Desktop/sem4/dass/dass_assignment_2/whitebox/venv/bin/python -m pytest integration/tests/test_integration.py -v
 ```
 
 ---
+
+### Execution Summary
+- Total tests: 17
+- Result: 17 passed
+- Environment: Python 3.12.3, pytest 9.0.2 (whitebox virtual environment)
+
+### Errors Found and Fixes Applied
+- Race creation did not check car readiness, so damaged or missing cars could enter races. Fixed by validating `inventory.is_car_ready()` in `RaceManagement.create_race()`.
+- Prize money was printed but not added to cash balance. Fixed by calling `inventory.update_cash()` in `Results.record_outcome()`.
+- Repairs could consume more parts than available because `Inventory.use_parts()` did not validate quantities. Fixed by adding checks for negative or insufficient parts.
+- Repair flow did not fail when parts were insufficient due to the inventory issue above. Fix is covered by the `Inventory.use_parts()` validation.
 
 ### Test Cases
 
@@ -299,117 +310,117 @@ pytest integration/tests/test_integration.py -v
 - **Scenario:** A role is assigned to a non registered crew member.
 - **Modules Involved:** CrewManagement, Registration
 - **Expected Result:** A `ValueError` is raised because the member is not registered.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed below).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC0b: Assigning an invalid role
 - **Scenario:** A registered member is assigned a role outside the valid set.
 - **Modules Involved:** CrewManagement, Registration
 - **Expected Result:** A `ValueError` is raised for invalid role.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC1: Registering a driver and then entering the driver into a race
 - **Scenario:** A new driver is registered, assigned the driver role, and a car is added to the inventory. The driver is then entered into a race.
 - **Modules Involved:** Registration, CrewManagement, Inventory, RaceManagement
 - **Expected Result:** `create_race()` succeeds and returns `{"driver": "Alice", "car": "SkylineGT"}`.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC2: Attempting to enter a race without a registered driver
 - **Scenario:** A race is requested with a driver name that is not registered.
 - **Modules Involved:** Registration, RaceManagement
 - **Expected Result:** A `ValueError` is raised because the member is not registered.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC3: Attempting to enter a race with a registered member who is not a driver
 - **Scenario:** A registered mechanic tries to enter a race as a driver.
 - **Modules Involved:** Registration, CrewManagement, RaceManagement
 - **Expected Result:** A `ValueError` is raised for role mismatch.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC4: Attempting to race with a damaged car
 - **Scenario:** A car is damaged, then used in a race request.
 - **Modules Involved:** Inventory, RaceManagement
 - **Expected Result:** A `ValueError` is raised because the car is not ready.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC4b: Attempting to race with a missing car
 - **Scenario:** A valid driver tries to race a car that is not in inventory.
 - **Modules Involved:** Inventory, RaceManagement
 - **Expected Result:** A `ValueError` is raised because the car is not available.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC5: Completing a race and verifying results and prize money update the inventory
 - **Scenario:** A driver wins a race; prize money and ranking points should update.
 - **Modules Involved:** RaceManagement, Results, Inventory, HallOfFame
 - **Expected Result:** Inventory cash increases by prize amount; driver ranking points update.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC5b: Race damage marks the car as damaged
 - **Scenario:** A race ends with car damage.
 - **Modules Involved:** Results, Inventory
 - **Expected Result:** The car status becomes "damaged" in inventory.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC6: Assigning a mission and validating crew role
 - **Scenario:** A strategist is assigned a recon mission; then a driver is incorrectly assigned a strategist mission.
 - **Modules Involved:** Registration, CrewManagement, MissionPlanning
 - **Expected Result:** Valid assignment returns `True`; invalid assignment raises `ValueError`.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC6b: Mission assignment requires registration
 - **Scenario:** A mission is assigned to an unregistered member.
 - **Modules Involved:** Registration, MissionPlanning
 - **Expected Result:** A `ValueError` is raised because the member is not registered.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC6c: Mechanic mission allowed when no damage exists
 - **Scenario:** A mechanic is assigned a mission while no cars are damaged.
 - **Modules Involved:** Registration, CrewManagement, MissionPlanning
 - **Expected Result:** The mission assignment returns `True`.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC7: Mechanic availability blocked if a car is damaged
 - **Scenario:** A car is damaged in a race and a mechanic is asked to take a mission.
 - **Modules Involved:** RaceManagement, Results, Inventory, MissionPlanning
 - **Expected Result:** A `ValueError` is raised because the mechanic is needed for repairs.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC8: RepairShop integration
 - **Scenario:** A damaged car is repaired by a registered mechanic using spare parts.
 - **Modules Involved:** Registration, CrewManagement, Inventory, RepairShop
 - **Expected Result:** Repair succeeds, parts decrease, and the car can be restored to ready.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC8b: RepairShop requires a mechanic
 - **Scenario:** A non mechanic attempts a repair.
 - **Modules Involved:** Registration, CrewManagement, RepairShop
 - **Expected Result:** A `ValueError` is raised.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC8c: RepairShop requires enough parts
 - **Scenario:** A mechanic attempts a repair without enough parts in inventory.
 - **Modules Involved:** Inventory, RepairShop
 - **Expected Result:** A `ValueError` is raised for insufficient parts.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.
 
 #### TC9: Hall of Fame bonus awarded once after three wins
 - **Scenario:** A driver reaches three wins, then wins again.
 - **Modules Involved:** HallOfFame, Inventory
 - **Expected Result:** A single $5,000 bonus is applied only once.
-- **Actual Result:** Not executed in this report.
-- **Errors/Logical Issues Found:** Not executed in this report.
+- **Actual Result:** Pass (after fixes listed above).
+- **Errors/Logical Issues Found:** None after fixes.

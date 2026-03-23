@@ -23,6 +23,7 @@ class Results:
         if prize_money > 0:
             # We calculate and display the prize allocation
             print(f"Prize money allocated: ${prize_money}")
+            self.inventory.update_cash(prize_money)
 
         # 3. Handle car damage during race
         if car_damaged:
